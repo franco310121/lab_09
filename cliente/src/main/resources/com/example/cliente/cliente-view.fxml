@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.cliente.ClienteController">
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
+
+    <!-- Datos de la caja -->
+    <Label text="Datos de Caja" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Cajero:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="cashierField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" disable="true" text="Aaron" />
+
+        <Label text="ID Caja:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <TextField fx:id="cashboxIdField" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200" disable="true" text="001" />
+    </GridPane>
+
+    <!-- Título principal -->
+    <Label text="Selección de Productos" style="-fx-font-size: 18px; -fx-font-weight: bold"/>
+
+    <!-- Selección de producto y cantidad -->
+    <HBox spacing="10">
+        <Label text="Producto:"/>
+        <ComboBox fx:id="productComboBox" prefWidth="200"/>
+        <Label text="Cantidad:"/>
+        <TextField fx:id="quantityField" promptText="1" prefWidth="60"/>
+        <Button text="Agregar al carrito" onAction="#onAddToCart"/>
+    </HBox>
+
+    <!-- Carrito de compras con columnas -->
+    <Label text="Carrito de Compra:" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
+    <TableView fx:id="cartTableView" prefHeight="200" prefWidth="500">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Nombre" prefWidth="200"/>
+            <TableColumn fx:id="quantityColumn" text="Cantidad" prefWidth="100"/>
+            <TableColumn fx:id="subtotalColumn" text="Subtotal" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <!-- Total -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Label text="Total General:"/>
+        <Label fx:id="totalLabel" text="S/ 0.00" style="-fx-font-weight: bold"/>
+    </HBox>
+
+    <!-- Datos del cliente -->
+    <Label text="Datos del Cliente" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="customerNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
+
+        <Label text="Teléfono:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="customerPhoneField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
+
+        <Label text="Codigo:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="customerCodeField" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200"/>
+    </GridPane>
+
+
+
+    <!-- Botones finales -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Iniciar Venta" onAction="#onStartSale"/>
+        <Button text="Cancelar" onAction="#onCancel"/>
+    </HBox>
+</VBox>
