@@ -7,6 +7,8 @@ module com.example.cliente {
     requires org.kordamp.bootstrapfx.core;
     requires jdk.jdi;
     requires java.sql;
+    requires java.desktop;
+    requires org.json;
 
     opens com.example.cliente to javafx.fxml;
     exports com.example.cliente;

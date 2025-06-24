@@ -10,6 +10,14 @@
         <Insets top="20" bottom="20" left="20" right="20"/>
     </padding>
 
+    <!-- Parte superior: Botón grande y Número de Venta -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="INICIAR VENTA" onAction="#onRequestVoucher" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10px 20px"/>
+        <Label text="Número de Venta:" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
+        <Label fx:id="voucherIdLabel" text="---" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: darkblue"/>
+    </HBox>
+
+
     <!-- Datos de la caja -->
     <Label text="Datos de Caja" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
     <GridPane hgap="10" vgap="10">
@@ -56,16 +64,18 @@
 
         <Label text="Teléfono:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <TextField fx:id="customerPhoneField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
+        <Button GridPane.rowIndex="1" GridPane.columnIndex="2" text="Enviar token" onAction="#onSendToken" prefWidth="100"/>
 
         <Label text="Codigo:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
         <TextField fx:id="customerCodeField" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200"/>
+        <Button GridPane.rowIndex="2" GridPane.columnIndex="2" text="Validar Token" onAction="#onValidateToken" prefWidth="100"/>
     </GridPane>
 
 
 
     <!-- Botones finales -->
     <HBox spacing="15" alignment="CENTER">
-        <Button text="Iniciar Venta" onAction="#onStartSale"/>
+        <Button text="Procesar Venta" onAction="#onStartSale"/>
         <Button text="Cancelar" onAction="#onCancel"/>
     </HBox>
 </VBox>
