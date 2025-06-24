@@ -3,7 +3,13 @@ package com.example.cliente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -59,6 +65,9 @@ public class ClienteController {
 
     @FXML
     private TextField cashboxIdField;
+
+    @FXML
+    private VBox formContainer;
 
     private ObservableList<ProductoCarrito> carrito = FXCollections.observableArrayList();
 
@@ -119,6 +128,30 @@ public class ClienteController {
 
     @FXML
     public void onStartSale() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("token_verificacion.fxml"));
+            Parent root = loader.load();
+
+            TokenController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Verificación de Token");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            if (!controller.isValidado()) {
+                showAlert("Debe validar el token antes de continuar.");
+                return;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("No se pudo abrir la ventana de verificación.");
+            return;
+        }
+
         String nombre = customerNameField.getText().trim();
         String telefono = customerPhoneField.getText().trim();
 
@@ -223,6 +256,8 @@ public class ClienteController {
 
     @FXML
     public void onRequestVoucher() {
+        formContainer.setVisible(true);
+        formContainer.setManaged(true);
         try {
             // URL del servidor Flask
             URL url = new URL("http://161.132.45.205:5000/api/voucher");
