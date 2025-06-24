@@ -128,7 +128,7 @@ public class ClienteController {
 
     @FXML
     public void onStartSale() {
-
+        /*
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("token_verificacion.fxml"));
             Parent root = loader.load();
@@ -150,7 +150,7 @@ public class ClienteController {
             e.printStackTrace();
             showAlert("No se pudo abrir la ventana de verificación.");
             return;
-        }
+        }*/
 
         String nombre = customerNameField.getText().trim();
         String telefono = customerPhoneField.getText().trim();
@@ -183,6 +183,7 @@ public class ClienteController {
             json.put("id_tienda", 1);
             json.put("total", total);
             json.put("nombre_cliente", nombre);
+            json.put("estado", "validado");
             System.out.println(voucherIdLabel.getText().trim());
             System.out.println(total + nombre);
 
