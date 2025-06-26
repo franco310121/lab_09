@@ -20,6 +20,11 @@
         <TextField fx:id="cashboxIdField" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200" disable="true" text="001" />
     </GridPane>
 
+    <Button fx:id="btnSincronizar"
+            text="Sincronizar Ventas"
+            onAction="#onSincronizarClick"
+            style="-fx-font-size: 14px; -fx-padding: 6 16;" />
+
     <!-- Parte superior: Botón grande y Número de Venta -->
     <Button text="INICIAR VENTA" onAction="#onRequestVoucher" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10px 20px"/>
 
@@ -62,14 +67,6 @@
         <GridPane hgap="10" vgap="10">
             <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
             <TextField fx:id="customerNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
-
-            <Label text="Teléfono:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="customerPhoneField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
-            <Button GridPane.rowIndex="1" GridPane.columnIndex="2" text="Enviar token" onAction="#onSendToken" prefWidth="100"/>
-
-            <Label text="Codigo:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="customerCodeField" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200"/>
-            <Button GridPane.rowIndex="2" GridPane.columnIndex="2" text="Validar Token" onAction="#onValidateToken" prefWidth="100"/>
         </GridPane>
 
 

@@ -42,15 +42,15 @@ public class TokenController {
             conn.setDoOutput(true);
 
             String jsonInput = "{\"telefono\": \"" + phone + "\"}";
-            System.out.println("➡ Enviando JSON a: " + url);
-            System.out.println("➡ Payload: " + jsonInput);
+            System.out.println("Enviando JSON a: " + url);
+            System.out.println("Payload: " + jsonInput);
 
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(jsonInput.getBytes("utf-8"));
             }
 
             int responseCode = conn.getResponseCode();
-            System.out.println("⬅ Código HTTP recibido: " + responseCode);
+            System.out.println("Código HTTP recibido: " + responseCode);
 
             if (responseCode == 200) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
@@ -60,16 +60,16 @@ public class TokenController {
                     content.append(line);
                 }
                 in.close();
-                System.out.println("⬅ Respuesta exitosa: " + content);
-                showAlert("✓ Token enviado al teléfono +51" + phone);
+                System.out.println("Respuesta exitosa: " + content);
+                showAlert("Token enviado al teléfono +51" + phone);
 
             } else {
-                System.err.println("✗ ERROR AL ENVIAR TOKEN:");
-                System.err.println("✗ Código HTTP: " + responseCode);
-                System.err.println("✗ Mensaje: " + conn.getResponseMessage());
+                System.err.println("ERROR AL ENVIAR TOKEN:");
+                System.err.println("Código HTTP: " + responseCode);
+                System.err.println("Mensaje: " + conn.getResponseMessage());
 
                 // Cabeceras de respuesta
-                System.err.println("✗ Cabeceras:");
+                System.err.println("Cabeceras:");
                 conn.getHeaderFields().forEach((k, v) -> System.err.println("  " + k + ": " + v));
 
                 // Cuerpo del error
@@ -80,20 +80,18 @@ public class TokenController {
                     errorBody.append(line).append("\n");
                 }
                 br.close();
-                System.err.println("✗ Cuerpo del error:");
+                System.err.println("Cuerpo del error:");
                 System.err.println(errorBody.toString());
 
-                showAlert("✗ Error del servidor:\n" + errorBody.toString().trim());
+                showAlert("Error del servidor:\n" + errorBody.toString().trim());
             }
 
         } catch (Exception e) {
-            System.err.println("✗ EXCEPCIÓN DETECTADA:");
+            System.err.println("EXCEPCIÓN DETECTADA:");
             e.printStackTrace();
-            showAlert("✗ Error de conexión:\n" + e.getClass().getSimpleName() + ": " + e.getMessage());
+            showAlert("Error de conexión:\n" + e.getClass().getSimpleName() + ": " + e.getMessage());
         }
     }
-
-
 
     @FXML
     public void onValidateToken() {
@@ -101,7 +99,7 @@ public class TokenController {
         String token = codeField.getText().trim();
 
         if (phone.isEmpty() || token.isEmpty()) {
-            showAlert("✗ Error: Teléfono y token requeridos");
+            showAlert("Error: Teléfono y token requeridos");
             return;
         }
 
@@ -125,20 +123,45 @@ public class TokenController {
             }
 
             JSONObject jsonResponse = new JSONObject(response.toString());
-            boolean valido = jsonResponse.getBoolean("valido");
+            validado = jsonResponse.getBoolean("valido");
             String mensaje = jsonResponse.getString("mensaje");
 
-            if (valido) {
-                showAlert("✅ Verificación exitosa: " + mensaje);
+            if (validado) {
+                showAlert("Verificación exitosa: " + mensaje);
             } else {
-                showAlert("❌ Token inválido: " + mensaje);
+                // Detecta si el token expiró
+                if (mensaje.toLowerCase().contains("expirado")) {
+                    showResendOption(phone);
+                } else {
+                    showAlert("Token inválido: " + mensaje);
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("✗ Error de conexión al validar token: " + e.getMessage());
+            showAlert("Error de conexión al validar token: " + e.getMessage());
         }
     }
+
+    private void showResendOption(String phone) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Token expirado");
+        alert.setHeaderText("El token ha expirado");
+        alert.setContentText("¿Deseas reenviar el token al número +51" + phone + "?");
+
+        alert.getButtonTypes().setAll(
+                javafx.scene.control.ButtonType.YES,
+                javafx.scene.control.ButtonType.NO
+        );
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == javafx.scene.control.ButtonType.YES) {
+                onSendToken();
+                codeField.clear();
+            }
+        });
+    }
+
 
     @FXML
     private void onConfirm() {
@@ -148,6 +171,8 @@ public class TokenController {
 
     private void showAlert(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
