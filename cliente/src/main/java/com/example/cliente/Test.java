@@ -22,8 +22,8 @@ public class Test {
             String jsonInput = """
             {
               "id_tienda": 1,
-              "total": 123.45,
-              "nombre_cliente": "Antonio Huarachi"
+              "total": 0.0,
+              "nombre_cliente": "Cliente"
             }
             """;
 

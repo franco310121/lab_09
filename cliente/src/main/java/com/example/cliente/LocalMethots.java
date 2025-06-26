@@ -31,7 +31,7 @@ public class LocalMethots {
 
             String fechaCompacta = fechaActual.replace("-", "");
             String correlativoStr = String.format("%04d", correlativo);
-            String voucherId = "1" + fechaCompacta + correlativoStr;
+            String voucherId = fechaCompacta + correlativoStr;
 
             PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO voucher_local (voucher_id_local, fecha, hora, id_tienda, total, nombre_cliente, estado, enviado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"

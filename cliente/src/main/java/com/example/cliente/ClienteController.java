@@ -61,7 +61,7 @@ public class ClienteController {
 
     private ObservableList<ProductoCarrito> carrito = FXCollections.observableArrayList();
 
-    private static final String SERVER_URL = "http://161.132.45.205X:5000";
+    private static final String SERVER_URL = "http://161.132.45.205:5000";
 
     ProductoDAO productoDAO = new ProductoDAO();
     List<Producto> productos = productoDAO.obtenerTodosLosProductos();
@@ -143,28 +143,6 @@ public class ClienteController {
                 connPut.getOutputStream().write(jsonPut.toString().getBytes("utf-8"));
                 connPut.getInputStream().close();
 
-                // 5. Insertar detalles
-                PreparedStatement psDetalles = connLocal.prepareStatement("SELECT * FROM detalle_local WHERE voucher_id_local = ?");
-                psDetalles.setString(1, voucherIdLocal);
-                ResultSet rsDetalles = psDetalles.executeQuery();
-
-                DetalleVentaDAO dao = new DetalleVentaDAO();
-                while (rsDetalles.next()) {
-                    String producto = rsDetalles.getString("nombre_producto");
-                    int cantidad = rsDetalles.getInt("cantidad");
-                    double subtotal = rsDetalles.getDouble("subtotal");
-
-                    dao.insertarDetalle(Long.parseLong(newVoucherId), producto, cantidad, subtotal);
-                }
-
-                // 6. Registrar en voucher_sincronizado
-                PreparedStatement psSync = connLocal.prepareStatement("""
-                INSERT INTO voucher_sincronizado (voucher_id_local, voucher_id_remoto, fecha_envio, hora_envio)
-                VALUES (?, ?, CURDATE(), CURTIME())
-            """);
-                psSync.setString(1, voucherIdLocal);
-                psSync.setString(2, newVoucherId);
-                psSync.executeUpdate();
 
                 // 7. Marcar como enviado
                 PreparedStatement psUpdate = connLocal.prepareStatement("UPDATE voucher_local SET enviado = 1 WHERE voucher_id_local = ?");
@@ -236,7 +214,7 @@ public class ClienteController {
             showAlert("El total de la venta debe ser mayor a cero.");
             return;
         }
-        /*
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("token_verificacion.fxml"));
             Parent root = loader.load();
@@ -259,7 +237,7 @@ public class ClienteController {
             showAlert("No se pudo abrir la ventana de verificación.");
             return;
         }
-        */
+
         try {
             // 1. Preparar JSON con org.json
             JSONObject json = new JSONObject();
